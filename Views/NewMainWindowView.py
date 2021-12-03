@@ -16,6 +16,7 @@ class NewMainWindowView(QMainWindow):
         self.__ui.setupUi(self)
         self.__ui.button_edit_skin_player.clicked.connect(self.__controller.edit_select_skin)
         self.__ui.butto_settings.clicked.connect(self.__controller.edit_settings)
+        self.__ui.button_start_search.clicked.connect(self.__controller.start_search_game)
 
         self.__model.attach(self)
 
