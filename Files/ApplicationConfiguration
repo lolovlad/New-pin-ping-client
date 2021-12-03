@@ -1,0 +1,15 @@
+{
+  "server": {
+    "key": "12345",
+    "url": "http://127.0.0.1:5000/"
+  },
+  "data_base": {
+    "type_database": "sqlite",
+    "name_database": "main",
+    "default_name_database": "default"
+  },
+  "socket": {
+    "ip": "localhost",
+    "port": 2510
+  }
+}

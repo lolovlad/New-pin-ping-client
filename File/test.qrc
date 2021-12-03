@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="settings">
+    <file>263074.png</file>
+  </qresource>
+  <qresource prefix="mmr">
+    <file>SeasonalRank3-4.png</file>
+  </qresource>
+</RCC>
