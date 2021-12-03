@@ -2,6 +2,10 @@ import pygame
 import time
 import os
 import sys
+from PySide6.QtWidgets import QApplication
+from Models import LoginModel
+from Controllers.LoginController import LoginController
+
 from Core.GameSystem import GameSystem
 from Core.MainMenu import MainMenu
 from Model.DataBase import DataBase
@@ -18,7 +22,7 @@ color = 'white'
 
 
 def network_core(net, mmr):
-    net.send_message({"Type_Command": "Login", "Name_user": user_name, "Color": color, "Ip_user": ip, "Mmr_user": mmr})
+    net.send_message({"type_request": "start_search_game", "Name_user": user_name, "Color": color, "Ip_user": ip, "Mmr_user": mmr})
     while True:
         command = net.listener()
         if command is not None:
@@ -44,20 +48,20 @@ def game_start(co=0):
     
 def game_menu():
     global user_name, color
+    app = QApplication(sys.argv)
+    model = LoginModel()
+    controller = LoginController(model)
+    app.exec()
 
-    while not DataBase().is_playing:
-        if DataBase().last_button == "connect":
+
+Thread(target=game_menu, args=(), daemon=True).start()
+while True:
+    if DataBase().last_button == "connect" and not DataBase().is_playing:
             user_name = "lol"
             color = ['white', 'red', 'green', 'blue', 'yellow'][0]
-            socket = NetWork()
-            socket('localhost', 2510)
             DataBaseNetwork().attach(CommandPars())
-            Thread(target=network_core, args=(socket, 1000,), daemon=True).start()
-    pygame.quit()
-
-
-while True:
-    game_menu()
+            Thread(target=network_core, args=(NetWork(), 1000,), daemon=True).start()
+            DataBase().last_button = "None"
     if DataBase().is_playing:
         game_start(counter)
-    os.execl(sys.executable, 'python', __file__, *sys.argv[1:])
+    #os.execl(sys.executable, 'python', __file__, *sys.argv[1:])
